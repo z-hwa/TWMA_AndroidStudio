@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TWMA</string>
+    <string name="show_less">Show Less</string>
+    <string name="show_more">Show More</string>
+    <string name="otherInf_animOfWordCard">單字額外資訊的展開動畫</string>
+    <string name="correctRate">Correct Rate:</string>
+    <string name="inputData">Input Your Data</string>
+    <string name="foreignData">Foreign Data</string>
+    <string name="localData">Local Data</string>
+</resources>
