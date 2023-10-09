@@ -4,12 +4,16 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -22,14 +26,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.twma.ui.theme.TWMATheme
 
 //單個單字的UI
@@ -113,7 +116,7 @@ fun WordCard(word: Word) {
 @Composable
 fun WordList(
     modifier: Modifier = Modifier,
-    wordList: List<Word> = List(1000) {Word()}
+    wordList: List<Word> = List(100) {Word()}
 ) {
     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
         //遍歷輸出所有word
@@ -123,24 +126,41 @@ fun WordList(
     }
 }
 
+//返回鍵
+@Composable
+fun ReBack(modifier: Modifier, reback: ()->Unit) {
+    Button(modifier = modifier
+        .size(120.dp, 84.dp)
+        .padding(2.dp),
+        onClick = reback,
+        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+        ) {
+        Text(text = "Back")
+    }
+}
+
 //單字頁面
 @Composable
-fun WordPage(modifier: Modifier = Modifier, navController: NavController = rememberNavController()){
-    Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        WordList()
+fun WordPage(modifier: Modifier = Modifier, rebackToWordInput: () -> Unit){
+    Surface(modifier = modifier, color = MaterialTheme.colorScheme.background) {
+        //用於排版的box
+        Box(modifier = modifier) {
+            WordList(modifier = modifier.fillMaxSize())
+            ReBack(modifier = modifier.align(Alignment.BottomEnd),
+                reback = rebackToWordInput)
+        }
     }
 }
 
 //預覽
 @Preview(
     showBackground = true,
-    widthDp = 320,
     uiMode = UI_MODE_NIGHT_YES,
     name = "Dark"
 )
 @Composable
 fun PreviewWordPage() {
     TWMATheme {
-        WordPage()
+        WordPage(rebackToWordInput = {})
     }
 }

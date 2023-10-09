@@ -2,7 +2,6 @@ package com.example.twma
 
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,6 +29,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
@@ -39,7 +39,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.twma.ui.theme.TWMATheme
 
 //dp px之間的轉換
@@ -49,12 +48,45 @@ fun Int.DptoPx(): Int = (this * Resources.getSystem().displayMetrics.density).to
 */
 fun Int.fromPxtoSp(): Int = (this * Resources.getSystem().displayMetrics.scaledDensity).toInt()
 
+//輸入的提示
+@Composable
+fun InputHint(modifier: Modifier, isDown: Boolean, heightOfHint: Int,
+              initHeight: (Int)->Unit,
+              lowerHeight: ()->Unit,
+              ) {
+    Column (modifier = modifier){
+        //是否準備繪製
+        var readyToDraw by remember {
+            mutableStateOf(false)
+        }
+
+        //請輸入的column
+        Text(text = stringResource(id = R.string.inputData),
+            textAlign = TextAlign.Start,
+            fontFamily = FontFamily.Cursive,
+            modifier = Modifier
+                .fillMaxSize()
+                .onGloballyPositioned {
+                    if (!isDown) initHeight(it.size.height.fromPxtoSp())
+                }
+                .drawWithContent {
+                    if (readyToDraw) drawContent()
+                },
+            fontSize = heightOfHint.sp,
+            onTextLayout = {
+                    textLayoutResult ->
+                if(textLayoutResult.didOverflowHeight) { lowerHeight() }
+                else {readyToDraw = true}
+            }
+        )
+    }
+}
+
 //中心區域
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MiddleArea(
-) {
-    Box(modifier = Modifier
+fun MiddleArea(modifier: Modifier){
+    Box(modifier = modifier
         .background(MaterialTheme.colorScheme.primary)
         .padding(20.dp)
     ) {
@@ -70,29 +102,16 @@ fun MiddleArea(
             var heightOfHint by remember { mutableStateOf(25) }
             var isDown by remember { mutableStateOf(false) }
 
-            Column (modifier = Modifier
-                .weight(1f)
-                .fillMaxSize()
-            ){
-                //請輸入的column
-                Log.d("test", "test")
-                Text(text = stringResource(id = R.string.inputData),
-                    textAlign = TextAlign.Start,
-                    fontFamily = FontFamily.Cursive,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .onGloballyPositioned {
-                            if (!isDown) heightOfHint = it.size.height.fromPxtoSp()
-                        },
-                    fontSize = heightOfHint.sp,
-                    onTextLayout = {
-                        textLayoutResult -> if(textLayoutResult.didOverflowHeight) {
-                            heightOfHint = (heightOfHint * 0.9f).toInt()
-                            isDown = true   //下降調整過
-                        }
-                    }
-                )
-            }
+            InputHint(
+                Modifier
+                    .weight(1f)
+                    .fillMaxSize(), isDown, heightOfHint,
+                initHeight = {heightOfHint = it},
+                lowerHeight = {
+                    heightOfHint = (heightOfHint * 0.9f).toInt()
+                    isDown = true   //下降調整過
+                }
+            )
             Column (modifier = Modifier
                 .weight(4f)
                 .fillMaxSize()
@@ -159,12 +178,12 @@ fun MiddleArea(
 @Composable
 fun WordInput(
     modifier: Modifier = Modifier,
-    navController: NavController = rememberNavController()
+    goToWordPage: ()->Unit
 ){
     Surface(
         modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
     ) {
-        MiddleArea()
+        MiddleArea(modifier)
     }
 }
 
@@ -182,6 +201,6 @@ fun WordInput(
 @Composable
 fun PreviewWordInput() {
     TWMATheme {
-        WordInput()
+        WordInput(goToWordPage = {})
     }
 }
