@@ -7,8 +7,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,7 +40,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.twma.ui.theme.TWMATheme
 
 //dp px之間的轉換
@@ -82,13 +83,76 @@ fun InputHint(modifier: Modifier, isDown: Boolean, heightOfHint: Int,
     }
 }
 
-//中心區域
+//外語資料的欄位
 @OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ForeignData(modifier: Modifier) {
+    Column (modifier = modifier){
+        //輸入外語資料
+
+        //外語資料暫存
+        var foreignData by remember {
+            mutableStateOf("")
+        }
+
+        TextField(value = foreignData,
+            onValueChange = {foreignData = it},
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(0.75f),
+            shape = RoundedCornerShape(11),
+            placeholder = { Text(text = stringResource(id = R.string.foreignData))},
+            maxLines = 3
+        )
+    }
+}
+
+//本地資料的欄位
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LocalData(modifier: Modifier) {
+    Column (modifier = modifier){
+        //輸入本地資料
+        //外語資料暫存
+        var localData by remember {
+            mutableStateOf("")
+        }
+
+        TextField(value = localData,
+            onValueChange = {localData = it},
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(0.75f),
+            shape = RoundedCornerShape(11),
+            placeholder = { Text(text = stringResource(id = R.string.localData))},
+            maxLines = 3
+        )
+    }
+}
+
+//儲存案件的bar
+@Composable
+fun SaveBar(modifier: Modifier) {
+    Column (modifier = modifier) {
+        Button(onClick = {},
+            modifier = Modifier
+                .fillMaxHeight()
+                .align(CenterHorizontally),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.tertiary),
+            border = BorderStroke(width = 1.dp, color = Color.Black)
+        ){
+        }
+    }
+}
+
+//中心區域
 @Composable
 fun MiddleArea(modifier: Modifier){
     Box(modifier = modifier
-        .background(MaterialTheme.colorScheme.primary)
         .padding(20.dp)
+        .fillMaxWidth()
+        .height(400.dp)
     ) {
         Column(horizontalAlignment = Alignment.Start,
             modifier = Modifier
@@ -112,64 +176,91 @@ fun MiddleArea(modifier: Modifier){
                     isDown = true   //下降調整過
                 }
             )
-            Column (modifier = Modifier
+            ForeignData(modifier = Modifier
                 .weight(4f)
                 .fillMaxSize()
-                .padding(4.dp)
-            ){
-                //輸入外語資料
-
-                //外語資料暫存
-                var foreignData by remember {
-                    mutableStateOf("")
-                }
-
-                TextField(value = foreignData,
-                    onValueChange = {foreignData = it},
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .alpha(0.75f),
-                    shape = RoundedCornerShape(11),
-                    placeholder = { Text(text = stringResource(id = R.string.foreignData))},
-                    maxLines = 3
-                )
-            }
-            Column (modifier = Modifier
+                .padding(4.dp))
+            LocalData(modifier = Modifier
                 .weight(4f)
                 .fillMaxSize()
-                .padding(4.dp)
-            ){
-                //輸入本地資料
-                //外語資料暫存
-                var localData by remember {
-                    mutableStateOf("")
-                }
-
-                TextField(value = localData,
-                    onValueChange = {localData = it},
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .alpha(0.75f),
-                    shape = RoundedCornerShape(11),
-                    placeholder = { Text(text = stringResource(id = R.string.localData))},
-                    maxLines = 3
-                )
-            }
-            Column (modifier = Modifier
+                .padding(4.dp))
+            SaveBar(modifier = Modifier
                 .weight(1.5f)
                 .fillMaxSize()
-                .padding(3.5.dp)
-            ) {
-                Button(onClick = {},
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .align(CenterHorizontally),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.tertiary),
-                    border = BorderStroke(width = 1.dp, color = Color.Black)
-                    ){
-                }
-            }
+                .padding(3.5.dp))
+        }
+    }
+}
+
+@Composable
+fun DownBar(modifier: Modifier,
+            goToWordPage: () -> Unit) {
+    Row (modifier = modifier
+        .fillMaxWidth()
+        .height(70.dp)
+        .padding(5.dp)
+    ){
+        Button(onClick = goToWordPage,
+            Modifier
+                .weight(1f)
+                .padding(1.dp)
+                .fillMaxHeight(),
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+            border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.tertiary),
+            shape = RoundedCornerShape(5.dp),
+        ) {
+            Text(
+                text = stringResource(id = R.string.wordPage),
+                color = Color.Black,
+                fontFamily = FontFamily.Cursive,
+                fontSize = 17.sp,
+            )
+        }
+        Button(onClick = { /*TODO*/ },
+            Modifier
+                .weight(1f)
+                .padding(1.dp)
+                .fillMaxHeight(),
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+            border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.tertiary),
+            shape = RoundedCornerShape(5.dp),
+        ) {
+            Text(
+                text = stringResource(id = R.string.emptyString),
+                color = Color.Black,
+                fontFamily = FontFamily.Cursive,
+                fontSize = 17.sp,
+            )
+        }
+        Button(onClick = { /*TODO*/ },
+            Modifier
+                .weight(1f)
+                .padding(1.dp)
+                .fillMaxHeight(),
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+            border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.tertiary),
+            shape = RoundedCornerShape(5.dp),
+        ) {
+            Text(text = stringResource(id = R.string.emptyString),
+                color = Color.Black,
+                fontFamily = FontFamily.Cursive,
+                fontSize = 17.sp,
+            )
+        }
+        Button(onClick = { /*TODO*/ },
+            Modifier
+                .weight(1f)
+                .padding(1.dp)
+                .fillMaxHeight(),
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+            border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.tertiary),
+            shape = RoundedCornerShape(5.dp),
+        ) {
+            Text(text = stringResource(id = R.string.emptyString),
+                color = Color.Black,
+                fontFamily = FontFamily.Cursive,
+                fontSize = 17.sp,
+            )
         }
     }
 }
@@ -181,18 +272,24 @@ fun WordInput(
     goToWordPage: ()->Unit
 ){
     Surface(
-        modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+        modifier = modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        MiddleArea(modifier)
+        //用於排版的box
+        Box(modifier = modifier) {
+            MiddleArea(modifier = modifier.align(Alignment.Center))
+            DownBar(modifier = modifier.align(Alignment.BottomCenter),
+                goToWordPage = goToWordPage)
+        }
     }
 }
 
 //預覽
-@Preview(
+/*@Preview(
     showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     name = "Dark"
-)
+)*/
 @Preview(
     showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_NO,

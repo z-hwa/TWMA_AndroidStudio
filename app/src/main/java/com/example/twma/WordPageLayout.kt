@@ -4,6 +4,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -129,13 +132,15 @@ fun WordList(
 //返回鍵
 @Composable
 fun ReBack(modifier: Modifier, reback: ()->Unit) {
-    Button(modifier = modifier
+    Button(onClick = reback,
+        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+        border = BorderStroke(width = 2.dp, color = Color.Black),
+        modifier = modifier
         .size(120.dp, 84.dp)
-        .padding(2.dp),
-        onClick = reback,
-        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+        .padding(2.dp)
+        .alpha(7.5f),
         ) {
-        Text(text = "Back")
+        Text(text = stringResource(id = R.string.reBack))
     }
 }
 

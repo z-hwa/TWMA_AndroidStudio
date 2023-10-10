@@ -7,4 +7,7 @@
     <string name="inputData">Input Your Data</string>
     <string name="foreignData">Foreign Data</string>
     <string name="localData">Local Data</string>
+    <string name="emptyString" />
+    <string name="wordPage">Word\\nPage</string>
+    <string name="reBack">back</string>
 </resources>
