@@ -12,8 +12,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.twma.ui.theme.TWMATheme
 
-var wordList = WordList()
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +35,10 @@ fun AppNaviGation() {
         startDestination = "WordInput") {
 
         composable("WordInput") {
-            WordInput(goToWordPage = {navController.navigate(route = "WordPage")})  //前往單字倉庫
+            WordInput(goToWordPage = {navController.navigate(route = "WordPage")}, wordList = wordList)  //前往單字倉庫
         }
         composable("WordPage") {
-            WordPage(rebackToWordInput = {navController.navigate(route = "WordInput")}) //回到單字輸入頁
+            WordPage(rebackToWordInput = {navController.navigate(route = "WordInput")}, wordList = wordList) //回到單字輸入頁
         }
 
     }

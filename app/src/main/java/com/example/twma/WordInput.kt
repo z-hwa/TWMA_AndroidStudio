@@ -140,7 +140,7 @@ fun SaveBar(modifier: Modifier, Onclick: ()->Unit) {
 
 //中心區域
 @Composable
-fun MiddleArea(modifier: Modifier){
+fun MiddleArea(modifier: Modifier, wordList: WordList){
     Box(modifier = modifier
         .padding(20.dp)
         .fillMaxWidth()
@@ -305,7 +305,8 @@ fun DownBar(modifier: Modifier,
 @Composable
 fun WordInput(
     modifier: Modifier = Modifier,
-    goToWordPage: ()->Unit
+    goToWordPage: ()->Unit,
+    wordList: WordList
 ){
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -313,7 +314,7 @@ fun WordInput(
     ) {
         //用於排版的box
         Box(modifier = modifier) {
-            MiddleArea(modifier = modifier.align(Alignment.Center))
+            MiddleArea(modifier = modifier.align(Alignment.Center), wordList = wordList)
             DownBar(modifier = modifier.align(Alignment.BottomCenter),
                 goToWordPage = goToWordPage)
         }
@@ -334,6 +335,6 @@ fun WordInput(
 @Composable
 fun PreviewWordInput() {
     TWMATheme {
-        WordInput(goToWordPage = {})
+        WordInput(goToWordPage = {}, wordList = WordList())
     }
 }

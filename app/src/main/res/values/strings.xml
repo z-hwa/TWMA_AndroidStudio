@@ -11,4 +11,5 @@
     <string name="wordPage">Word\\nPage</string>
     <string name="reBack">back</string>
     <string name="extraData">extra Information</string>
+    <string name="deleteWord">delete this word</string>
 </resources>

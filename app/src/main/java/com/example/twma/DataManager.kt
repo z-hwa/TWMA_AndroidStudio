@@ -2,9 +2,11 @@ package com.example.twma
 
 import android.util.Log
 
-class WordList() {
+var wordList = WordList()
 
-    var list = List<Word>(0) { Word() }
+class WordList{
+
+    var list = List<Word>(0){Word()}
 
     fun AddWord(foreignData: String, localData: String, extraInf: String ) {
         this.list = this.list.plusElement(Word(_foreignData = foreignData,
