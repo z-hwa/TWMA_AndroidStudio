@@ -150,7 +150,7 @@ fun WordPage(modifier: Modifier = Modifier, rebackToWordInput: () -> Unit){
     Surface(modifier = modifier, color = MaterialTheme.colorScheme.background) {
         //用於排版的box
         Box(modifier = modifier) {
-            WordList(modifier = modifier.fillMaxSize())
+            WordList(modifier = modifier.fillMaxSize(), wordList = wordList.list)
             ReBack(modifier = modifier.align(Alignment.BottomEnd),
                 reback = rebackToWordInput)
         }

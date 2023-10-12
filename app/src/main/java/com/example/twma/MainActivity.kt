@@ -5,11 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.twma.ui.theme.TWMATheme
+
+var wordList = WordList()
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TWMATheme {
                 Surface(modifier = Modifier) {
+                    //wordList.AddWord("11", "11", "11")
                     AppNaviGation()
                 }
             }

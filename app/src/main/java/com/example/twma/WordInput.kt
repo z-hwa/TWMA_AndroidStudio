@@ -2,6 +2,7 @@ package com.example.twma
 
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -86,17 +87,12 @@ fun InputHint(modifier: Modifier, isDown: Boolean, heightOfHint: Int,
 //外語資料的欄位
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ForeignData(modifier: Modifier) {
+fun ForeignData(modifier: Modifier, foreignData: String, RenewText: (String) -> Unit) {
     Column (modifier = modifier){
         //輸入外語資料
 
-        //外語資料暫存
-        var foreignData by remember {
-            mutableStateOf("")
-        }
-
         TextField(value = foreignData,
-            onValueChange = {foreignData = it},
+            onValueChange = RenewText,
             modifier = Modifier
                 .fillMaxSize()
                 .alpha(0.75f),
@@ -110,16 +106,12 @@ fun ForeignData(modifier: Modifier) {
 //本地資料的欄位
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocalData(modifier: Modifier) {
+fun LocalData(modifier: Modifier, localData: String, RenewText: (String)->Unit) {
     Column (modifier = modifier){
         //輸入本地資料
-        //外語資料暫存
-        var localData by remember {
-            mutableStateOf("")
-        }
 
         TextField(value = localData,
-            onValueChange = {localData = it},
+            onValueChange = RenewText,
             modifier = Modifier
                 .fillMaxSize()
                 .alpha(0.75f),
@@ -132,9 +124,9 @@ fun LocalData(modifier: Modifier) {
 
 //儲存案件的bar
 @Composable
-fun SaveBar(modifier: Modifier) {
+fun SaveBar(modifier: Modifier, Onclick: ()->Unit) {
     Column (modifier = modifier) {
-        Button(onClick = {},
+        Button(onClick = Onclick,
             modifier = Modifier
                 .fillMaxHeight()
                 .align(CenterHorizontally),
@@ -154,9 +146,19 @@ fun MiddleArea(modifier: Modifier){
         .fillMaxWidth()
         .height(400.dp)
     ) {
+        var foreignData by remember {
+            mutableStateOf("")
+        }
+        var localData by remember {
+            mutableStateOf("")
+        }
+        var extraData by remember {
+            mutableStateOf("")
+        }
+
         Column(horizontalAlignment = Alignment.Start,
             modifier = Modifier
-                .height(300.dp)
+                .height(500.dp)
                 .clip(shape = RoundedCornerShape(12))   //切割出圓角
                 .background(MaterialTheme.colorScheme.secondary)
                 .align(Alignment.Center)
@@ -179,17 +181,51 @@ fun MiddleArea(modifier: Modifier){
             ForeignData(modifier = Modifier
                 .weight(4f)
                 .fillMaxSize()
-                .padding(4.dp))
+                .padding(4.dp),
+                foreignData = foreignData,
+                RenewText = {foreignData = it})
             LocalData(modifier = Modifier
                 .weight(4f)
                 .fillMaxSize()
-                .padding(4.dp))
+                .padding(4.dp),
+                localData = localData,
+                RenewText = {localData = it})
+            ExtraInput(modifier = Modifier
+                .weight(5f)
+                .fillMaxSize()
+                .padding(4.dp),
+                extraData = extraData,
+                RenewText = {extraData = it}
+            )
             SaveBar(modifier = Modifier
                 .weight(1.5f)
                 .fillMaxSize()
-                .padding(3.5.dp))
+                .padding(3.5.dp),
+                Onclick = { wordList.AddWord(foreignData = foreignData,
+                    localData =  localData,
+                    extraInf = extraData)
+                    //Log.d("tt", "test")
+                    //if(!wordList.IsEmpty()) Log.d("class test", wordList.list[0].localData)
+                })
         }
     }
+}
+
+//額外資訊
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ExtraInput(modifier: Modifier, extraData: String, RenewText: (String) -> Unit) {
+
+    TextField(value = extraData,
+        onValueChange = RenewText,
+        modifier = modifier
+            .fillMaxWidth()
+            .alpha(0.55f),
+        placeholder = { Text(text = stringResource(id = R.string.extraData))},
+        maxLines = 5,
+        shape = RoundedCornerShape(11)
+    )
+
 }
 
 @Composable
