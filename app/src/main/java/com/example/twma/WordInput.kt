@@ -2,7 +2,6 @@ package com.example.twma
 
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -201,11 +200,18 @@ fun MiddleArea(modifier: Modifier, wordList: WordList){
                 .weight(1.5f)
                 .fillMaxSize()
                 .padding(3.5.dp),
-                Onclick = { wordList.AddWord(foreignData = foreignData,
+                Onclick = {
+                    wordList.AddWord(foreignData = foreignData,
                     localData =  localData,
                     extraInf = extraData)
-                    //Log.d("tt", "test")
-                    //if(!wordList.IsEmpty()) Log.d("class test", wordList.list[0].localData)
+
+                    Thread() {
+                        userDao.insertWord(WordE(id = null,
+                            foreignData = foreignData,
+                            localData = localData,
+                            extraInf = extraData,
+                            correctRate = 0.0)) //更新資料庫
+                    }.start()
                 })
         }
     }
