@@ -1,6 +1,5 @@
 package com.example.twma
 
-import android.content.Context
 import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Database
@@ -9,7 +8,6 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
-import androidx.room.Room
 import androidx.room.RoomDatabase
 
 //每個entity相當於一張表
@@ -31,10 +29,10 @@ interface UserDao {
 
     //插入單字
     @Insert
-    fun insertWord(vararg wordE: WordE?)
+    fun insertWord(vararg wordE: WordE?): Int
 
     //查詢特定單字
-    @Query("SELECT * FROM wordE WHERE id like :wordID")
+    @Query("SELECT * FROM wordE WHERE id = :wordID")
     fun queryWord(wordID: Int): WordE?
 
     //取出全部資料
@@ -44,6 +42,9 @@ interface UserDao {
     //根據主鍵刪除單字
     @Delete
     fun delete(wordE: WordE?): Int
+
+    @Query("DELETE FROM wordE WHERE id = :wordId")
+    fun delete(wordId: Int): Int
 }
 
 //資料庫

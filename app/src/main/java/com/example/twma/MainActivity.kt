@@ -33,8 +33,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TWMATheme {
                 Surface(modifier = Modifier) {
-                    //wordList.AddWord("11", "11", "11")
-                    AppNaviGation(userDao)
+                    AppNaviGation()
                 }
             }
         }
@@ -49,12 +48,14 @@ fun InitDp() {
 
         //把單字做載入
         for(word in userDao.queryAll()) {
-            if(word.foreignData!=null && word.localData!=null && word.correctRate!=null && word.extraInf!=null) {
+            if(word.foreignData!=null && word.localData!=null && word.correctRate!=null && word.extraInf!=null
+                && word.id!=null) {
                 wordList.AddWord(
                     foreignData = word.foreignData,
                     localData = word.localData,
                     extraInf = word.extraInf,
-                    correctRate = word.correctRate
+                    correctRate = word.correctRate,
+                    wordId = word.id
                 )
             }
         }
@@ -62,7 +63,7 @@ fun InitDp() {
 }
 
 @Composable
-fun AppNaviGation(userDao: UserDao) {
+fun AppNaviGation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController,

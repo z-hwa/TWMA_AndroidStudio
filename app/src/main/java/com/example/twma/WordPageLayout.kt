@@ -110,7 +110,8 @@ fun WordContent(word: Word) {
             }
         }
 
-        Column (modifier = Modifier.height(colHeight.dp)
+        Column (modifier = Modifier
+            .height(colHeight.dp)
             .weight(0.08f),
             verticalArrangement = Arrangement.SpaceBetween){
             //顯示更多資訊的 icon圖標
@@ -129,7 +130,14 @@ fun WordContent(word: Word) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_close_24),
                 contentDescription = stringResource(id = R.string.deleteWord),
-                modifier = Modifier.alpha(0.55f).fillMaxWidth().clickable { /*delete word*/ }
+                modifier = Modifier
+                    .alpha(0.55f)
+                    .fillMaxWidth()
+                    .clickable { /*delete word*/
+                        Thread() {
+                            userDao.delete(wordId = word.wordId) //更新資料庫
+                        }.start()
+                    }
             )
         }
     }
@@ -154,6 +162,7 @@ fun WordList(
     modifier: Modifier = Modifier,
     wordList: List<Word> = List(10) {Word()}
 ) {
+
     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
         //遍歷輸出所有word
         items(items = wordList){

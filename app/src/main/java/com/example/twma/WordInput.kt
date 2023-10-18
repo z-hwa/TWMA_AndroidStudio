@@ -201,17 +201,21 @@ fun MiddleArea(modifier: Modifier, wordList: WordList){
                 .fillMaxSize()
                 .padding(3.5.dp),
                 Onclick = {
-                    wordList.AddWord(foreignData = foreignData,
-                    localData =  localData,
-                    extraInf = extraData)
+                    var wordId = 0
 
                     Thread() {
-                        userDao.insertWord(WordE(id = null,
+                        wordId = userDao.insertWord(WordE(id = null,
                             foreignData = foreignData,
                             localData = localData,
                             extraInf = extraData,
                             correctRate = 0.0)) //更新資料庫
                     }.start()
+
+
+                    wordList.AddWord(foreignData = foreignData,
+                        localData =  localData,
+                        extraInf = extraData,
+                        wordId = wordId)
                 })
         }
     }

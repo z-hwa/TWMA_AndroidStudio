@@ -8,11 +8,12 @@ class WordList{
     var list = List<Word>(0){Word()}
 
     //傳入單字參數添加
-    fun AddWord(foreignData: String, localData: String, extraInf: String , correctRate:Double = 0.0) {
+    fun AddWord(foreignData: String, localData: String, extraInf: String , correctRate:Double = 0.0, wordId: Int) {
         this.list = this.list.plusElement(Word(_foreignData = foreignData,
             _localData =  localData,
             _correctRate = correctRate,
-            _extraInf = extraInf
+            _extraInf = extraInf,
+            _wordId = wordId
         ))
     }
 
@@ -21,7 +22,8 @@ class WordList{
         this.list = this.list.plusElement(Word(_foreignData = word.foreignData,
             _localData =  word.localData,
             _correctRate = word.correctRate,
-            _extraInf = word.extraInf
+            _extraInf = word.extraInf,
+            _wordId = word.wordId
         ))
     }
 
