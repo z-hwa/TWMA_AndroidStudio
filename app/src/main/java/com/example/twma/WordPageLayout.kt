@@ -50,7 +50,7 @@ fun Int.PxtoDp(): Int = (this / Resources.getSystem().displayMetrics.density).to
 
 //單個單字的UI
 @Composable
-fun WordContent(word: Word) {
+fun WordContent(word: Word, IsDeleted: ()->Unit, isDeleted: Boolean) {
     var expanded by remember {
         //紀錄更多資料介面 是否打開
         mutableStateOf(false)
@@ -66,7 +66,7 @@ fun WordContent(word: Word) {
                 stiffness = Spring.StiffnessLow
             )
         )
-        .clickable { expanded = !expanded }
+        .clickable { if (!isDeleted) expanded = !expanded }
         .fillMaxWidth(), //點擊展開
         horizontalArrangement = Arrangement.SpaceBetween
     ){
@@ -135,7 +135,9 @@ fun WordContent(word: Word) {
                     .fillMaxWidth()
                     .clickable { /*delete word*/
                         Thread() {
+                            IsDeleted()    //標記當前單字被刪除
                             userDao.delete(wordId = word.wordId) //更新資料庫
+                            wordList.RenewList()    //更新單字列表
                         }.start()
                     }
             )
@@ -146,13 +148,18 @@ fun WordContent(word: Word) {
 //單字卡
 @Composable
 fun WordCard(word: Word) {
+
+    var isDeleted by remember {
+        mutableStateOf(false)
+    }
+
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary
         ),
-        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp).alpha(if(!isDeleted) 1f else 0.3f)
     ) {
-        WordContent(word = word)
+        WordContent(word = word, {isDeleted = true}, isDeleted)
     }
 }
 
@@ -160,9 +167,8 @@ fun WordCard(word: Word) {
 @Composable
 fun WordList(
     modifier: Modifier = Modifier,
-    wordList: List<Word> = List(10) {Word()}
+    wordList: List<Word> = List(1) {Word()}
 ) {
-
     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
         //遍歷輸出所有word
         items(items = wordList){
@@ -190,10 +196,12 @@ fun ReBack(modifier: Modifier, reback: ()->Unit) {
 @Composable
 fun WordPage(modifier: Modifier = Modifier, rebackToWordInput: () -> Unit, wordList: WordList){
     Surface(modifier = modifier, color = MaterialTheme.colorScheme.background) {
+
         //用於排版的box
         Box(modifier = modifier) {
             if(!wordList.IsEmpty()) WordList(modifier = modifier.fillMaxSize(), wordList = wordList.list)
             else WordList(modifier.fillMaxSize())
+
             ReBack(modifier = modifier.align(Alignment.BottomEnd),
                 reback = rebackToWordInput)
         }

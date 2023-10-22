@@ -133,6 +133,11 @@ fun SaveBar(modifier: Modifier, Onclick: ()->Unit) {
                 contentColor = MaterialTheme.colorScheme.tertiary),
             border = BorderStroke(width = 1.dp, color = Color.Black)
         ){
+            Text(text = stringResource(id = R.string.save),
+                color = Color.Black,
+                modifier = Modifier.fillMaxHeight(),
+                fontSize = 10.sp
+            ) //儲存字樣
         }
     }
 }
@@ -196,27 +201,29 @@ fun MiddleArea(modifier: Modifier, wordList: WordList){
                 extraData = extraData,
                 RenewText = {extraData = it}
             )
+
             SaveBar(modifier = Modifier
                 .weight(1.5f)
                 .fillMaxSize()
                 .padding(3.5.dp),
                 Onclick = {
-                    var wordId = 0
-
+                    //更新資料庫
                     Thread() {
-                        wordId = userDao.insertWord(WordE(id = null,
+                        userDao.insertWord(WordE(id = null,
                             foreignData = foreignData,
                             localData = localData,
                             extraInf = extraData,
-                            correctRate = 0.0)) //更新資料庫
+                            correctRate = 0.0))
+
+                        wordList.RenewList()    //更新單字列表(會添加新單字進去
+
+                        //儲存後清空輸入欄位
+                        foreignData = ""
+                        localData = ""
+                        extraData = ""
                     }.start()
-
-
-                    wordList.AddWord(foreignData = foreignData,
-                        localData =  localData,
-                        extraInf = extraData,
-                        wordId = wordId)
-                })
+                }
+            )
         }
     }
 }
@@ -249,18 +256,25 @@ fun DownBar(modifier: Modifier,
         Button(onClick = goToWordPage,
             Modifier
                 .weight(1f)
-                .padding(1.dp)
                 .fillMaxHeight(),
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
             border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.tertiary),
             shape = RoundedCornerShape(5.dp),
         ) {
-            Text(
-                text = stringResource(id = R.string.wordPage),
-                color = Color.Black,
-                fontFamily = FontFamily.Cursive,
-                fontSize = 17.sp,
-            )
+            Column (modifier = Modifier.fillMaxSize()){
+                Text(
+                    text = stringResource(id = R.string.word),
+                    color = Color.Black,
+                    fontFamily = FontFamily.Cursive,
+                    fontSize = 17.sp,
+                )
+                Text(
+                    text = stringResource(id = R.string.page),
+                    color = Color.Black,
+                    fontFamily = FontFamily.Cursive,
+                    fontSize = 17.sp,
+                )
+            }
         }
         Button(onClick = { /*TODO*/ },
             Modifier

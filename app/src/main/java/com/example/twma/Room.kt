@@ -16,7 +16,7 @@ import androidx.room.RoomDatabase
 data class WordE(
     //主鍵 用於在資料庫中識別不同的資料列
     @PrimaryKey(autoGenerate = true)    //自動分配key值 初始為1
-    val id: Int?,
+    val id: Long?,
 
     @ColumnInfo(name = "foreignData") val foreignData: String?,
     @ColumnInfo(name = "localData") val localData: String?,
@@ -29,11 +29,11 @@ interface UserDao {
 
     //插入單字
     @Insert
-    fun insertWord(vararg wordE: WordE?): Int
+    fun insertWord(wordE: WordE?): Long?
 
     //查詢特定單字
     @Query("SELECT * FROM wordE WHERE id = :wordID")
-    fun queryWord(wordID: Int): WordE?
+    fun queryWord(wordID: Long): WordE?
 
     //取出全部資料
     @Query("SELECT * FROM wordE")
@@ -44,7 +44,7 @@ interface UserDao {
     fun delete(wordE: WordE?): Int
 
     @Query("DELETE FROM wordE WHERE id = :wordId")
-    fun delete(wordId: Int): Int
+    fun delete(wordId: Long): Int
 }
 
 //資料庫

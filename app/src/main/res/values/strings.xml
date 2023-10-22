@@ -8,8 +8,10 @@
     <string name="foreignData">Foreign Data</string>
     <string name="localData">Local Data</string>
     <string name="emptyString" />
-    <string name="wordPage">Word\\nPage</string>
+    <string name="word">Word</string>
+    <string name="page">Page</string>
     <string name="reBack">back</string>
     <string name="extraData">extra Information</string>
     <string name="deleteWord">delete this word</string>
+    <string name="save">save</string>
 </resources>

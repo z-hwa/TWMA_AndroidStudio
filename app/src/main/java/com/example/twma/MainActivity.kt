@@ -30,6 +30,8 @@ class MainActivity : ComponentActivity() {
             InitDp()
         }.start()
 
+        wordList.RenewList()    //初始化單字列表
+
         setContent {
             TWMATheme {
                 Surface(modifier = Modifier) {

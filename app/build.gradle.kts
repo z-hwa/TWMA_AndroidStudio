@@ -11,11 +11,11 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.twma"
+        applicationId = "com.newmaker.twma"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
