@@ -5,6 +5,7 @@ import android.content.res.Resources
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -131,12 +132,11 @@ fun SaveBar(modifier: Modifier, Onclick: ()->Unit) {
                 .align(CenterHorizontally),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.tertiary),
-            border = BorderStroke(width = 1.dp, color = Color.Black)
+            border = BorderStroke(width = 0.5.dp, color = Color.Black)
         ){
             Text(text = stringResource(id = R.string.save),
                 color = Color.Black,
-                modifier = Modifier.fillMaxHeight(),
-                fontSize = 10.sp
+                fontSize = 12.sp
             ) //儲存字樣
         }
     }
@@ -167,7 +167,7 @@ fun MiddleArea(modifier: Modifier, wordList: WordList){
                 .background(MaterialTheme.colorScheme.secondary)
                 .align(Alignment.Center)
                 .border(width = 3.dp, color = Color.Black, shape = RoundedCornerShape(12))
-                .padding(20.dp)
+                .padding(10.dp)
         ) {
             var heightOfHint by remember { mutableStateOf(25) }
             var isDown by remember { mutableStateOf(false) }
@@ -266,13 +266,13 @@ fun DownBar(modifier: Modifier,
                     text = stringResource(id = R.string.word),
                     color = Color.Black,
                     fontFamily = FontFamily.Cursive,
-                    fontSize = 17.sp,
+                    fontSize = 20.sp,
                 )
                 Text(
                     text = stringResource(id = R.string.page),
                     color = Color.Black,
                     fontFamily = FontFamily.Cursive,
-                    fontSize = 17.sp,
+                    fontSize = 20.sp,
                 )
             }
         }
@@ -337,9 +337,9 @@ fun WordInput(
         color = MaterialTheme.colorScheme.background
     ) {
         //用於排版的box
-        Box(modifier = modifier) {
-            MiddleArea(modifier = modifier.align(Alignment.Center), wordList = wordList)
-            DownBar(modifier = modifier.align(Alignment.BottomCenter),
+        Column(modifier = modifier) {
+            MiddleArea(modifier = modifier.weight(1f), wordList = wordList)
+            DownBar(modifier = modifier.weight(0.1f),
                 goToWordPage = goToWordPage)
         }
     }
@@ -354,7 +354,7 @@ fun WordInput(
 @Preview(
     showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_NO,
-    name = "light"
+    name = "light",
 )
 @Composable
 fun PreviewWordInput() {

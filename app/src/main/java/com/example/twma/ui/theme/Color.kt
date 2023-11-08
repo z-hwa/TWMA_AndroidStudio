@@ -21,9 +21,9 @@ val purple2 = Color(188, 166, 227, 89)
 val yellow2 = Color(250, 250, 170, 98)
 val purple3 = Color(210, 163, 240, 94)
 
-val green1 = Color(57, 237, 103, 93)
-val green2 = Color(66, 247, 59, 97)
-val green3 = Color(126, 224, 65, 88)
+val green1 = Color(235, 189, 101, 92)
+val green2 = Color(235, 222, 101, 92)
+val green3 = Color(235, 205, 101, 92)
 val green4 = Color(197, 247, 59, 97)
 val green5 = Color(237, 233, 57, 93)
 
